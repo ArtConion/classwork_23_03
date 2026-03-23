@@ -89,6 +89,20 @@ bool test7()
   }
 }
 
+bool test8()
+{
+  Vector< int > a(3,1);
+  Vector< int > b(3,1);
+  return a == b;
+}
+
+bool test9()
+{
+  Vector< int > a(3,1);
+  Vector< int > b(3,2);
+  return a != b;
+}
+
 int main()
 {
   using test_t = bool(*)();
@@ -100,7 +114,9 @@ int main()
     {test4, "In range access does not generate exceptions"},
     {test5, "Out of range access generates std::out_of_range exception"},
     {test6, "In range access for const vector does not generate exceptions"},
-    {test7, "Out of range access for const vector generates std::out_of_range exception"}
+    {test7, "Out of range access for const vector generates std::out_of_range exception"},
+    {test8, "Operator =="},
+    {test9, "Operator !="}
   };
 
   size_t size = sizeof(tests) / sizeof(case_t);

@@ -15,11 +15,17 @@ namespace topit
 
     bool isEmpty() const noexcept;
     size_t getSize() const noexcept;
+    size_t getCapacity() const noexcept;
+
+    void pushBack(const T& val);
 
     T& operator[](size_t id) noexcept;
     const T& operator[](size_t id) const noexcept;
     T& at(size_t id);
     const T& at(size_t id) const;
+
+    bool operator==(const Vector< T >& rhs) const noexcept;
+    bool operator!=(const Vector< T >& rhs) const noexcept;
 
   private:
     T* data_;
@@ -27,6 +33,31 @@ namespace topit
 
     explicit Vector(size_t size);
   };
+}
+
+template < class T >
+bool topit::Vector< T >::operator==(const topit::Vector< T >& rhs) const noexcept
+{
+  if (size_ != rhs.getSize())
+  {
+    return false;
+  }
+
+  for (size_t i = 0; i < size_; ++i)
+  {
+    if (data_[i] != rhs.data_[i])
+    {
+      return false;
+    }
+  }
+
+  return false;
+}
+
+template < class T >
+bool topit::Vector< T >::operator!=(const topit::Vector< T >& rhs) const noexcept
+{
+  return (*this == rhs);
 }
 
 template< class T >
