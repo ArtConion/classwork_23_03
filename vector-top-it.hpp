@@ -36,7 +36,7 @@ namespace topit
 }
 
 template < class T >
-bool topit::Vector< T >::operator==(const topit::Vector< T >& rhs) const noexcept
+bool topit::Vector< T >::operator==(const Vector< T >& rhs) const noexcept
 {
   if (size_ != rhs.getSize())
   {
@@ -55,7 +55,7 @@ bool topit::Vector< T >::operator==(const topit::Vector< T >& rhs) const noexcep
 }
 
 template < class T >
-bool topit::Vector< T >::operator!=(const topit::Vector< T >& rhs) const noexcept
+bool topit::Vector< T >::operator!=(const Vector< T >& rhs) const noexcept
 {
   return !(*this == rhs);
 }
@@ -106,6 +106,24 @@ template< class T >
 size_t topit::Vector< T >::getCapacity() const noexcept
 {
   return capacity_;
+}
+
+template< class T>
+void topit::Vector< T >::pushBack(const T& val)
+{
+  if (size_ == capacity_)
+  {
+    T* newData = new T[size_ * 2];
+    for (size_t i = 0; i < size_; ++i)
+    {
+      newData[i] = data_[i];
+    }
+    T* tmp = data_;
+    data_ = newData;
+    delete[] tmp;
+    capacity_ *= 2;
+  }
+  data_[size_++] = val;
 }
 
 template< class T >

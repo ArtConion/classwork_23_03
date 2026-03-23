@@ -133,6 +133,23 @@ bool test13()
   return value == 1;
 }
 
+bool test14()
+{
+  constexpr size_t size = 3ull;
+  Vector< int > v(size, 1);
+  v.pushBack(2);
+  return v[size] == 2;
+}
+
+bool test15()
+{
+  constexpr size_t size = 3ull;
+  Vector< int > v(size, 1);
+  v.pushBack(2);
+  v.pushBack(3);
+  return v[size+1] == 3;
+}
+
 int main()
 {
   using test_t = bool(*)();
@@ -150,7 +167,9 @@ int main()
     {test10, "Defaul constructed vector capacity is zero"},
     {test11, "Vector constucted with capacity ihas non-zero capacity"},
     {test12, "Operator [] for range access in vector"},
-    {test13, "Operator [] for range access in const vector"}
+    {test13, "Operator [] for range access in const vector"},
+    {test14, "pushBack method with extention of capacity"},
+    {test15, "pushBack method without extention of capacity"}
   };
 
   size_t size = sizeof(tests) / sizeof(case_t);
