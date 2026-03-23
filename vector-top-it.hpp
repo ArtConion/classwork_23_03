@@ -51,13 +51,13 @@ bool topit::Vector< T >::operator==(const topit::Vector< T >& rhs) const noexcep
     }
   }
 
-  return false;
+  return true;
 }
 
 template < class T >
 bool topit::Vector< T >::operator!=(const topit::Vector< T >& rhs) const noexcept
 {
-  return (*this == rhs);
+  return !(*this == rhs);
 }
 
 template< class T >
@@ -100,6 +100,12 @@ template< class T>
 size_t topit::Vector< T >::getSize() const noexcept
 {
   return size_;
+}
+
+template< class T >
+size_t topit::Vector< T >::getCapacity() const noexcept
+{
+  return capacity_;
 }
 
 template< class T >

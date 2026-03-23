@@ -103,6 +103,19 @@ bool test9()
   return a != b;
 }
 
+bool test10()
+{
+  Vector< int > v;
+  return v.getCapacity() == 0;
+}
+
+bool test11()
+{
+  size_t size = 3ull;
+  Vector< int > v(size, 0);
+  return v.getCapacity() == size;
+}
+
 int main()
 {
   using test_t = bool(*)();
@@ -116,7 +129,9 @@ int main()
     {test6, "In range access for const vector does not generate exceptions"},
     {test7, "Out of range access for const vector generates std::out_of_range exception"},
     {test8, "Operator =="},
-    {test9, "Operator !="}
+    {test9, "Operator !="},
+    {test10, "Defaul constructed vector capacity is zero"},
+    {test11, "Vector constucted with capacity ihas non-zero capacity"}
   };
 
   size_t size = sizeof(tests) / sizeof(case_t);
