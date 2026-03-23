@@ -7,7 +7,7 @@ namespace topit
   struct Vector
   {
     Vector();
-    explicit Vector(size_t size);
+    Vector(size_t size, const T& val);
     ~Vector();
 
     Vector(const Vector< T >&) = delete;
@@ -24,6 +24,8 @@ namespace topit
   private:
     T* data_;
     size_t size_, capacity_;
+
+    explicit Vector(size_t size);
   };
 }
 
@@ -40,6 +42,26 @@ topit::Vector< T >::Vector(size_t size):
   size_(size),
   capacity_(size)
 {}
+
+template< class T >
+topit::Vector< T >::Vector(size_t size, const T& val):
+  data_(size ? new T[size] : nullptr),
+  size_(size),
+  capacity_(size)
+{
+  for (size_t i = 0; i < size; ++i)
+  {
+    try
+    {
+      data_[i] = val;
+    }
+    catch (...)
+    {
+      delete[] data_;
+      throw;
+    }
+  }
+}
 
 template< class T >
 topit::Vector< T >::~Vector()
@@ -68,7 +90,7 @@ T& topit::Vector< T >::operator[](size_t id) noexcept
 template< class T >
 T& topit::Vector< T >::at(size_t id)
 {
-  throw std::logic_error("Bad id");
+  return const_cast< T& >(static_cast< const Vector< T >* >(this)->at(id));
 }
 
 template< class T >
@@ -80,7 +102,11 @@ const T& topit::Vector< T >::operator[](size_t id) const noexcept
 template< class T >
 const T& topit::Vector< T >::at(size_t id) const
 {
-  throw std::logic_error("Bad id");
+  if (id < getSize())
+  {
+    return data_[id];
+  }
+  throw std::out_of_range("bad id");
 }
 
 #endif

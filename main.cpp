@@ -17,14 +17,14 @@ bool test2()
 bool test3()
 {
   size_t size = 3ull;
-  Vector< int > v(size);
+  Vector< int > v(size, 0);
   return v.getSize() == size;
 }
 
 bool test4()
 {
   constexpr size_t size = 3ull;
-  Vector< int > v(size);
+  Vector< int > v(size, 0);
   try
   {
     v.at(0);
@@ -39,7 +39,7 @@ bool test4()
 bool test5()
 {
   constexpr size_t size = 3ull;
-  Vector< int > v(size);
+  Vector< int > v(size, 0);
   try
   {
     v.at(size + 1);
@@ -58,7 +58,7 @@ bool test5()
 bool test6()
 {
   constexpr size_t size = 3ull;
-  const Vector< int > v(size);
+  const Vector< int > v(size, 0);
   try
   {
     v.at(0);
@@ -73,7 +73,7 @@ bool test6()
 bool test7()
 {
   constexpr size_t size = 3ull;
-  const Vector< int > v(size);
+  const Vector< int > v(size, 0);
   try
   {
     v.at(size + 1);
@@ -106,7 +106,7 @@ int main()
   size_t size = sizeof(tests) / sizeof(case_t);
   std::cout << std::boolalpha;
   bool result = true;
-  bool succceses = 0, fails = 0;
+  size_t succceses = 0, fails = 0;
 
   for (size_t i = 0; i < size ; ++i)
   {
