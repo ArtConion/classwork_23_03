@@ -116,6 +116,23 @@ bool test11()
   return v.getCapacity() == size;
 }
 
+bool test12()
+{
+  constexpr size_t size = 3ull;
+  Vector< int > v(size, 1);
+  const int& value = v[0];
+  return value == 1;
+}
+
+
+bool test13()
+{
+  constexpr size_t size = 3ull;
+  const Vector< int > v(size, 1);
+  const int& value = v[0];
+  return value == 1;
+}
+
 int main()
 {
   using test_t = bool(*)();
@@ -131,7 +148,9 @@ int main()
     {test8, "Operator =="},
     {test9, "Operator !="},
     {test10, "Defaul constructed vector capacity is zero"},
-    {test11, "Vector constucted with capacity ihas non-zero capacity"}
+    {test11, "Vector constucted with capacity ihas non-zero capacity"},
+    {test12, "Operator [] for range access in vector"},
+    {test13, "Operator [] for range access in const vector"}
   };
 
   size_t size = sizeof(tests) / sizeof(case_t);

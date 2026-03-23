@@ -111,7 +111,7 @@ size_t topit::Vector< T >::getCapacity() const noexcept
 template< class T >
 T& topit::Vector< T >::operator[](size_t id) noexcept
 {
-
+  return data_[id];
 }
 
 template< class T >
@@ -123,7 +123,7 @@ T& topit::Vector< T >::at(size_t id)
 template< class T >
 const T& topit::Vector< T >::operator[](size_t id) const noexcept
 {
-
+  return data_[id];
 }
 
 template< class T >
