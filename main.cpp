@@ -178,6 +178,25 @@ bool test18()
   return cpy_v == yav && cpy_yav == v;
 }
 
+bool test19()
+{
+  Vector< int > v(2, 0);
+  Vector< int > cpy_v(v);
+
+  Vector< int > yav = std::move(v);
+  return yav == cpy_v;
+}
+
+bool test20()
+{
+  Vector< int > v(2, 0);
+  Vector< int > cpy(v);
+  Vector< int > yav;
+
+  yav = std::move(v);
+  return yav == cpy;
+}
+
 int main()
 {
   using test_t = bool(*)();
@@ -199,9 +218,10 @@ int main()
     {test14, "pushBack method with extention of capacity"},
     {test15, "pushBack method without extention of capacity"},
     {test16, "Copy constructor"},
-    {test17, "Copy assignment constructor"},
-    {test18, "Swap for 2 vectors"}
-
+    {test17, "Copy assignment opertor"},
+    {test18, "Swap for 2 vectors"},
+    {test19, "Move constructor"},
+    {test20, "Move assignment opertor"}
   };
 
   size_t size = sizeof(tests) / sizeof(case_t);
