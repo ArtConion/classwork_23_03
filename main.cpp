@@ -202,26 +202,26 @@ int main()
   using test_t = bool(*)();
   using case_t = std::pair< test_t, const char* >;
   case_t tests[] = {
-    {test1, "Default constructed vector is empty"},
-    {test2, "Defaul constructed vector size is zero"},
-    {test3, "Vector constructed with size has non-zero size"},
-    {test4, "In range access does not generate exceptions"},
-    {test5, "Out of range access generates std::out_of_range exception"},
-    {test6, "In range access for const vector does not generate exceptions"},
-    {test7, "Out of range access for const vector generates std::out_of_range exception"},
-    {test8, "Operator =="},
-    {test9, "Operator !="},
-    {test10, "Defaul constructed vector capacity is zero"},
-    {test11, "Vector constucted with capacity ihas non-zero capacity"},
-    {test12, "Operator [] for range access in vector"},
-    {test13, "Operator [] for range access in const vector"},
-    {test14, "pushBack method with extention of capacity"},
-    {test15, "pushBack method without extention of capacity"},
-    {test16, "Copy constructor"},
-    {test17, "Copy assignment opertor"},
-    {test18, "Swap for 2 vectors"},
-    {test19, "Move constructor"},
-    {test20, "Move assignment opertor"}
+    { test1, "Default constructed vector is empty" },
+    { test2, "Defaul constructed vector size is zero" },
+    { test3, "Vector constructed with size has non-zero size" },
+    { test4, "In range access does not generate exceptions" },
+    { test5, "Out of range access generates std::out_of_range exception" },
+    { test6, "In range access for const vector does not generate exceptions" },
+    { test7, "Out of range access for const vector generates std::out_of_range exception" },
+    { test8, "Operator ==" },
+    { test9, "Operator !=" },
+    { test10, "Defaul constructed vector capacity is zero" },
+    { test11, "Vector constucted with capacity ihas non-zero capacity" },
+    { test12, "Operator [] for range access in vector" },
+    { test13, "Operator [] for range access in const vector" },
+    { test14, "pushBack method with extention of capacity" },
+    { test15, "pushBack method without extention of capacity" },
+    { test16, "Copy constructor" },
+    { test17, "Copy assignment operator" },
+    { test18, "Swap for 2 vectors" },
+    { test19, "Move constructor" },
+    { test20, "Move assignment operator" }
   };
 
   size_t size = sizeof(tests) / sizeof(case_t);

@@ -21,6 +21,23 @@ namespace topit
     size_t getCapacity() const noexcept;
 
     void pushBack(const T& val);
+    void pushFront(const T& val);
+
+    // C/W (use copy/swap  + tests)
+    void insert(size_t pos, const T& val);
+    void insert(size_t pos, const Vector< T >& rhs, size_t b, size_t e);
+    void erase(size_t pos);
+
+    // H/W
+    // 1. Реализовать итераторы для вектора (Сами итераторы не тестировать)
+    // 2. Придумать по 3 штуки insert/erase с итераторами (+ константные)
+    struct VectorIT;
+    void insert(VectorIT pos, const T& val);
+    void erase(VectorIT pos);
+
+    template< class IT >
+    void insert(VectorIT pos, IT begin, IT end);
+    // ...
 
     T& operator[](size_t id) noexcept;
     const T& operator[](size_t id) const noexcept;
@@ -106,6 +123,11 @@ topit::Vector< T >::Vector(const Vector< T >& rhs):
 template< class T >
 topit::Vector< T >& topit::Vector< T >::operator=(const Vector< T >& rhs)
 {
+  if (this == std::addressof(rhs))
+  {
+    return *this;
+  }
+
   Vector< T > cpy(rhs);
   swap(cpy);
 
@@ -123,6 +145,11 @@ topit::Vector< T >::Vector(Vector < T >&& rhs) noexcept:
 template<class T>
 topit::Vector< T >& topit::Vector< T >::operator=(Vector< T >&& rhs) noexcept
 {
+  if (this == std::addressof(rhs))
+  {
+    return *this;
+  }
+
   Vector< T > cpy(std::move(rhs));
   swap(cpy);
   return *this;
@@ -170,6 +197,17 @@ void topit::Vector< T >::pushBack(const T& val)
     capacity_ *= 2;
   }
   data_[size_++] = val;
+}
+
+template< class T >
+void topit::Vector< T >::pushFront(const T& val)
+{
+  Vector< T > result(getSize() + 1);
+  for (size_t i = 0; i < getSize(); ++i)
+  {
+    result[i + 1] = (*this)[i];
+  }
+  swap(result);
 }
 
 template< class T >
