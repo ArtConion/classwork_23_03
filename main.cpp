@@ -150,6 +150,34 @@ bool test15()
   return v[size+1] == 3;
 }
 
+bool test16()
+{
+  Vector< int > v(2, 0);
+  Vector< int > yav = v;
+  return yav == v;
+}
+
+bool test17()
+{
+  Vector< int > v;
+  Vector< int > yav(2, 0);
+  bool res = v != yav;
+  v = yav;
+  return res && yav == v;
+}
+
+bool test18()
+{
+  Vector< int > v(2, 0);
+  Vector< int > yav(3, 1);
+
+  Vector< int > cpy_v(v);
+  Vector< int > cpy_yav(yav);
+
+  v.swap(yav);
+  return cpy_v == yav && cpy_yav == v;
+}
+
 int main()
 {
   using test_t = bool(*)();
@@ -169,7 +197,11 @@ int main()
     {test12, "Operator [] for range access in vector"},
     {test13, "Operator [] for range access in const vector"},
     {test14, "pushBack method with extention of capacity"},
-    {test15, "pushBack method without extention of capacity"}
+    {test15, "pushBack method without extention of capacity"},
+    {test16, "Copy constructor"},
+    {test17, "Copy assignment constructor"},
+    {test18, "Swap for 2 vectors"}
+
   };
 
   size_t size = sizeof(tests) / sizeof(case_t);
