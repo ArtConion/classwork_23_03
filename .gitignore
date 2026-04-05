@@ -1,7 +1,0 @@
-*.out
-*.exe
-*.o
-*.d
-*.swp
-.vscode
-vector-tests

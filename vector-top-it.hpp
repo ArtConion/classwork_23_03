@@ -23,7 +23,6 @@ namespace topit
     void pushBack(const T& val);
     void pushFront(const T& val);
 
-    // C/W (use copy/swap  + tests)
     void insert(size_t pos, const T& val);
     void insert(size_t pos, const Vector< T >& rhs, size_t b, size_t e);
     void erase(size_t pos);
@@ -145,11 +144,6 @@ topit::Vector< T >::Vector(Vector < T >&& rhs) noexcept:
 template<class T>
 topit::Vector< T >& topit::Vector< T >::operator=(Vector< T >&& rhs) noexcept
 {
-  if (this == std::addressof(rhs))
-  {
-    return *this;
-  }
-
   Vector< T > cpy(std::move(rhs));
   swap(cpy);
   return *this;
@@ -208,6 +202,94 @@ void topit::Vector< T >::pushFront(const T& val)
     result[i + 1] = (*this)[i];
   }
   swap(result);
+}
+
+template< class T >
+void topit::Vector< T >::insert(size_t pos, const T& val)
+{
+    if (pos > size_)
+    {
+        throw std::out_of_range("insert position out of range");
+    }
+
+    Vector<T> result(size_ + 1);
+
+    for (size_t i = 0; i < pos; ++i)
+    {
+        result[i] = data_[i];
+    }
+
+    result[pos] = val;
+
+    for (size_t i = pos; i < size_; ++i)
+    {
+        result[i + 1] = data_[i];
+    }
+
+    swap(result);
+}
+
+template< class T >
+void topit::Vector< T >::insert(size_t pos, const Vector< T >& rhs, size_t b, size_t e)
+{
+    if (pos > size_)
+    {
+        throw std::out_of_range("insert position out of range");
+    }
+    if (b > e || e > rhs.getSize())
+    {
+        throw std::out_of_range("source range out of range");
+    }
+
+    size_t count = e - b;
+
+    Vector<T> result(size_ + count);
+
+    for (size_t i = 0; i < pos; ++i)
+    {
+        result[i] = data_[i];
+    }
+
+    for (size_t i = b; i < e; ++i)
+    {
+        result[pos + (i - b)] = rhs[i];
+    }
+
+    for (size_t i = pos; i < size_; ++i)
+    {
+        result[count + i] = data_[i];
+    }
+
+    swap(result);
+}
+
+template< class T >
+void topit::Vector< T >::erase(size_t pos)
+{
+    if (pos >= size_)
+    {
+        throw std::out_of_range("erase position out of range");
+    }
+
+    if (size_ == 1)
+    {
+        Vector<T> result;
+        swap(result);
+        return;
+    }
+    Vector<T> result(size_ - 1);
+
+    for (size_t i = 0; i < pos; ++i)
+    {
+        result[i] = data_[i];
+    }
+
+    for (size_t i = pos + 1; i < size_; ++i)
+    {
+        result[i - 1] = data_[i];
+    }
+
+    swap(result);
 }
 
 template< class T >
