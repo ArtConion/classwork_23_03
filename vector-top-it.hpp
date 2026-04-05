@@ -39,11 +39,14 @@ namespace topit
     CIter cbegin() const noexcept;
     CIter cend() const noexcept;
 
-    void insert(Iter pos, const T& val);
-    void erase(Iter pos);
+    Iter insert(Iter pos, const T& val);
+    Iter insert(Iter pos, size_t count, const T& val);
+    Iter insert(Iter pos, CIter first, CIter last);
+    Iter insert(Iter pos, Iter first, Iter last);
 
-    Iter insert(Iter pos, CIter begin, CIter end);
-    Iter insert(Iter pos, Iter begin, Iter end);
+    Iter erase(Iter pos);
+    Iter erase(Iter first, Iter last);
+    Iter erase(Iter first, Iter last, const T& val);
 
     T& operator[](size_t id) noexcept;
     const T& operator[](size_t id) const noexcept;
@@ -293,60 +296,83 @@ namespace topit
   };
 
   template< class T >
-  Vector< T >::Iter Vector< T >::begin() noexcept
+  typename Vector< T >::Iter Vector< T >::begin() noexcept
   {
     return Iter(data_);
   }
 
   template< class T >
-  Vector< T >::Iter Vector< T >::end() noexcept
+  typename Vector< T >::Iter Vector< T >::end() noexcept
   {
     return Iter(data_ + size_);
   }
 
   template< class T >
-  Vector< T >::CIter Vector< T >::begin() const noexcept
+  typename Vector< T >::CIter Vector< T >::begin() const noexcept
   {
     return CIter(data_);
   }
 
   template< class T >
-  Vector< T >::CIter Vector< T >::end() const noexcept
+  typename Vector< T >::CIter Vector< T >::end() const noexcept
   {
     return CIter(data_ + size_);
   }
 
   template< class T >
-  Vector< T >::CIter Vector< T >::cbegin() const noexcept
+  typename Vector< T >::CIter Vector< T >::cbegin() const noexcept
   {
     return CIter(data_);
   }
 
   template< class T >
-  Vector< T >::CIter Vector< T >::cend() const noexcept
+  typename Vector< T >::CIter Vector< T >::cend() const noexcept
   {
     return CIter(data_ + size_);
   }
 
   template< class T >
-  void Vector< T >::insert(Iter pos, const T& val)
+  typename Vector< T >::Iter Vector< T >::insert(Iter pos, const T& val)
   {
     int index = pos - begin();
     insert(static_cast<size_t>(index), val);
+    return begin() + index;
   }
 
   template< class T >
-  void Vector< T >::erase(Iter pos)
+  typename Vector< T >::Iter Vector< T >::insert(Iter pos, size_t count, const T& val)
   {
+    if (count == 0)
+    {
+      return pos;
+    }
+
     int index = pos - begin();
-    erase(static_cast<size_t>(index));
+
+    if (size_ + count > capacity_)
+    {
+      reallocate(size_ + count);
+    }
+
+    for (size_t i = size_; i > static_cast<size_t>(index); --i)
+    {
+      data_[i + count - 1] = data_[i - 1];
+    }
+
+    for (size_t i = 0; i < count; ++i)
+    {
+      data_[static_cast<size_t>(index) + i] = val;
+    }
+
+    size_ += count;
+    return begin() + index;
   }
 
   template< class T >
-  Vector< T >::Iter Vector< T >::insert(Iter pos, CIter cbegin, CIter cend)
+  typename Vector< T >::Iter Vector< T >::insert(Iter pos, CIter first, CIter last)
   {
     int index = pos - this->begin();
-    size_t count = static_cast<size_t>(cend - cbegin);
+    size_t count = static_cast<size_t>(last - first);
 
     if (count == 0)
     {
@@ -363,7 +389,7 @@ namespace topit
       data_[i + count - 1] = data_[i - 1];
     }
 
-    CIter it = cbegin;
+    CIter it = first;
     for (size_t i = 0; i < count; ++i)
     {
       data_[static_cast<size_t>(index) + i] = *it;
@@ -375,9 +401,98 @@ namespace topit
   }
 
   template< class T >
-  Vector< T >::Iter Vector< T >::insert(Iter pos, Iter begin, Iter end)
+  typename Vector< T >::Iter Vector< T >::insert(Iter pos, Iter first, Iter last)
   {
-    return insert(pos, CIter(begin), CIter(end));
+    return insert(pos, CIter(first), CIter(last));
+  }
+
+  template< class T >
+  typename Vector< T >::Iter Vector< T >::erase(Iter pos)
+  {
+    int index = pos - begin();
+    erase(static_cast<size_t>(index));
+
+    if (size_ == 0)
+    {
+      return end();
+    }
+
+    return begin() + index;
+  }
+
+  template< class T >
+  typename Vector< T >::Iter Vector< T >::erase(Iter first, Iter last)
+  {
+    if (first == last)
+    {
+      return first;
+    }
+
+    int first_index = first - begin();
+    int last_index = last - begin();
+    size_t count = static_cast<size_t>(last_index - first_index);
+
+    Vector<T> result(size_ - count);
+
+    for (int i = 0; i < first_index; ++i)
+    {
+      result[i] = data_[i];
+    }
+
+    for (size_t i = static_cast<size_t>(last_index); i < size_; ++i)
+    {
+      result[static_cast<size_t>(first_index) + (i - static_cast<size_t>(last_index))] = data_[i];
+    }
+
+    swap(result);
+
+    if (size_ == 0)
+    {
+      return end();
+    }
+
+    return begin() + first_index;
+  }
+
+  template< class T >
+  typename Vector< T >::Iter Vector< T >::erase(Iter first, Iter last, const T& val)
+  {
+    if (first == last)
+    {
+      return first;
+    }
+
+    int first_index = first - begin();
+    int last_index = last - begin();
+
+    Vector<T> result;
+
+    for (int i = 0; i < first_index; ++i)
+    {
+      result.pushBack(data_[i]);
+    }
+
+    for (int i = first_index; i < last_index; ++i)
+    {
+      if (data_[i] != val)
+      {
+        result.pushBack(data_[i]);
+      }
+    }
+
+    for (size_t i = static_cast<size_t>(last_index); i < size_; ++i)
+    {
+      result.pushBack(data_[i]);
+    }
+
+    swap(result);
+
+    if (size_ == 0)
+    {
+      return end();
+    }
+
+    return begin() + first_index;
   }
 
   template< class T >
@@ -680,3 +795,4 @@ namespace topit
 }
 
 #endif
+

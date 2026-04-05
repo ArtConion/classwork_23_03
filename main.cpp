@@ -2,6 +2,7 @@
 #include "vector-top-it.hpp"
 
 using topit::Vector;
+
 bool test1()
 {
   Vector< int > v;
@@ -27,7 +28,7 @@ bool test4()
   Vector< int > v(size, 1);
   try
   {
-    int& value =v.at(0);
+    int& value = v.at(0);
     return value == 1;
   }
   catch (...)
@@ -123,7 +124,6 @@ bool test12()
   const int& value = v[0];
   return value == 1;
 }
-
 
 bool test13()
 {
@@ -288,6 +288,95 @@ bool test26()
     }
 }
 
+bool test27()
+{
+    Vector<int> v(3, 1);
+    v.insert(v.begin() + 1, 5);
+
+    return v.getSize() == 4 && v[0] == 1 && v[1] == 5 && v[2] == 1 && v[3] == 1;
+}
+
+bool test28()
+{
+    Vector<int> v(3, 1);
+    v.insert(v.begin(), 5);
+
+    return v.getSize() == 4 && v[0] == 5 && v[1] == 1 && v[2] == 1 && v[3] == 1;
+}
+
+bool test29()
+{
+    Vector<int> v(2, 1);
+    v.insert(v.begin() + 1, 3, 5);
+
+    bool result = v.getSize() == 5;
+    result = result && v[0] == 1;
+    result = result && v[1] == 5 && v[2] == 5 && v[3] == 5;
+    result = result && v[4] == 1;
+    return result;
+}
+
+bool test30()
+{
+    Vector<int> v(2, 1);
+    Vector<int> toInsert(3, 5);
+    v.insert(v.begin() + 1, toInsert.begin(), toInsert.end());
+
+    bool result = v.getSize() == 5;
+    result = result && v[0] == 1;
+    result = result && v[1] == 5 && v[2] == 5 && v[3] == 5;
+    result = result && v[4] == 1;
+    return result;
+}
+
+bool test31()
+{
+    Vector<int> v(5, 0);
+    v[1] = 1;
+    v[2] = 2;
+    v[3] = 3;
+    v.erase(v.begin() + 2);
+
+    bool result = v.getSize() == 4;
+    result = result && v[0] == 0 && v[1] == 1;
+    result = result && v[2] == 3 && v[3] == 0;
+    return result;
+}
+
+bool test32()
+{
+    Vector<int> v(5, 0);
+    v[1] = 1;
+    v[2] = 2;
+    v[3] = 3;
+    v[4] = 4;
+    v.erase(v.begin() + 1, v.begin() + 4);
+
+    bool result = v.getSize() == 2;
+    result = result && v[0] == 0 && v[1] == 4;
+    return result;
+}
+
+bool test33()
+{
+    Vector<int> v(7, 0);
+    v[0] = 1;
+    v[1] = 2;
+    v[2] = 3;
+    v[3] = 2;
+    v[4] = 4;
+    v[5] = 2;
+    v[6] = 5;
+    v.erase(v.begin() + 1, v.begin() + 6, 2);
+
+    bool result = v.getSize() == 4;
+    result = result && v[0] == 1;
+    result = result && v[1] == 3;
+    result = result && v[2] == 4;
+    result = result && v[3] == 5;
+    return result;
+}
+
 int main()
 {
   using test_t = bool(*)();
@@ -319,6 +408,13 @@ int main()
     { test24, "insert range (invalid source range throws)" },
     { test25, "erase by index (middle)" },
     { test26, "erase by index (out of range throws)" },
+    { test27, "insert by iterator (middle)" },
+    { test28, "insert by iterator (begin)" },
+    { test29, "insert count copies by iterator" },
+    { test30, "insert range by iterators" },
+    { test31, "erase by iterator (middle)" },
+    { test32, "erase range by iterators" },
+    { test33, "erase values by iterators" },
   };
 
   size_t size = sizeof(tests) / sizeof(case_t);
@@ -338,5 +434,5 @@ int main()
   std::cout << result << ": tests RESULTS\n";
   std::cout << fails << ": failed tests\n";
   std::cout << succceses << ": successed tests\n";
-
 }
+
