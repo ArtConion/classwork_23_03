@@ -377,6 +377,18 @@ bool test33()
     return result;
 }
 
+bool test34()
+{
+  Vector< int > v{1, 2};
+  return (v.getSize() == 2 && v[0] == 1 && v[1] == 2);
+}
+
+bool test35()
+{
+  Vector< int > v{};
+  return v.isEmpty();
+}
+
 int main()
 {
   using test_t = bool(*)();
@@ -415,6 +427,8 @@ int main()
     { test31, "erase by iterator (middle)" },
     { test32, "erase range by iterators" },
     { test33, "erase values by iterators" },
+    { test34, "Non-empty initializer list constructor"},
+    { test35, "Empty initializer list constructor"}
   };
 
   size_t size = sizeof(tests) / sizeof(case_t);

@@ -2,6 +2,7 @@
 #define VECTOR_TOP_IT_HPP
 #include <cstddef>
 #include <stdexcept>
+#include <initializer_list>
 
 namespace topit
 {
@@ -16,6 +17,8 @@ namespace topit
     Vector< T >& operator=(const Vector< T >&);
     Vector(Vector < T >&&) noexcept;
     Vector< T >& operator=(Vector< T >&&) noexcept;
+
+    explicit Vector(std::initializer_list< T > il);
 
     void swap(Vector< T >&) noexcept;
     bool isEmpty() const noexcept;
@@ -136,7 +139,7 @@ namespace topit
 
     int operator-(const Iter& other) const noexcept
     {
-      return static_cast<int>(ptr_ - other.ptr_);
+      return static_cast< int >(ptr_ - other.ptr_);
     }
 
     T& operator[](int n) const noexcept
@@ -253,7 +256,7 @@ namespace topit
 
     int operator-(const CIter& other) const noexcept
     {
-      return static_cast<int>(ptr_ - other.ptr_);
+      return static_cast< int >(ptr_ - other.ptr_);
     }
 
     const T& operator[](int n) const noexcept
@@ -335,7 +338,7 @@ namespace topit
   typename Vector< T >::Iter Vector< T >::insert(Iter pos, const T& val)
   {
     int index = pos - begin();
-    insert(static_cast<size_t>(index), val);
+    insert(static_cast< size_t >(index), val);
     return begin() + index;
   }
 
@@ -354,14 +357,14 @@ namespace topit
       reallocate(size_ + count);
     }
 
-    for (size_t i = size_; i > static_cast<size_t>(index); --i)
+    for (size_t i = size_; i > static_cast< size_t >(index); --i)
     {
       data_[i + count - 1] = data_[i - 1];
     }
 
     for (size_t i = 0; i < count; ++i)
     {
-      data_[static_cast<size_t>(index) + i] = val;
+      data_[static_cast< size_t >(index) + i] = val;
     }
 
     size_ += count;
@@ -372,7 +375,7 @@ namespace topit
   typename Vector< T >::Iter Vector< T >::insert(Iter pos, CIter first, CIter last)
   {
     int index = pos - this->begin();
-    size_t count = static_cast<size_t>(last - first);
+    size_t count = static_cast< size_t >(last - first);
 
     if (count == 0)
     {
@@ -384,7 +387,7 @@ namespace topit
       reallocate(size_ + count);
     }
 
-    for (size_t i = size_; i > static_cast<size_t>(index); --i)
+    for (size_t i = size_; i > static_cast< size_t >(index); --i)
     {
       data_[i + count - 1] = data_[i - 1];
     }
@@ -392,7 +395,7 @@ namespace topit
     CIter it = first;
     for (size_t i = 0; i < count; ++i)
     {
-      data_[static_cast<size_t>(index) + i] = *it;
+      data_[static_cast< size_t >(index) + i] = *it;
       ++it;
     }
 
@@ -410,7 +413,7 @@ namespace topit
   typename Vector< T >::Iter Vector< T >::erase(Iter pos)
   {
     int index = pos - begin();
-    erase(static_cast<size_t>(index));
+    erase(static_cast< size_t >(index));
 
     if (size_ == 0)
     {
@@ -430,7 +433,7 @@ namespace topit
 
     int first_index = first - begin();
     int last_index = last - begin();
-    size_t count = static_cast<size_t>(last_index - first_index);
+    size_t count = static_cast< size_t >(last_index - first_index);
 
     Vector<T> result(size_ - count);
 
@@ -439,9 +442,9 @@ namespace topit
       result[i] = data_[i];
     }
 
-    for (size_t i = static_cast<size_t>(last_index); i < size_; ++i)
+    for (size_t i = static_cast< size_t >(last_index); i < size_; ++i)
     {
-      result[static_cast<size_t>(first_index) + (i - static_cast<size_t>(last_index))] = data_[i];
+      result[static_cast< size_t >(first_index) + (i - static_cast< size_t >(last_index))] = data_[i];
     }
 
     swap(result);
@@ -480,7 +483,7 @@ namespace topit
       }
     }
 
-    for (size_t i = static_cast<size_t>(last_index); i < size_; ++i)
+    for (size_t i = static_cast< size_t >(last_index); i < size_; ++i)
     {
       result.pushBack(data_[i]);
     }
@@ -612,6 +615,17 @@ namespace topit
       rhs.capacity_ = 0;
     }
     return *this;
+  }
+
+  template< class T >
+  Vector< T >::Vector(std::initializer_list< T > il):
+    Vector(il.size())
+  {
+    size_t i = 0;
+    for (auto it = il.begin(); it != il.end(); ++it)
+    {
+      data_[i++] = *it;
+    }
   }
 
   template< class T >
