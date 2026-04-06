@@ -12,7 +12,6 @@ namespace topit
     Vector();
     Vector(size_t size, const T& val);
     ~Vector();
-
     Vector(const Vector< T >&);
     Vector< T >& operator=(const Vector< T >&);
     Vector(Vector < T >&&) noexcept;
@@ -25,8 +24,17 @@ namespace topit
     size_t getSize() const noexcept;
     size_t getCapacity() const noexcept;
 
+    //H/w + tests
+    void reserve(size_t k); // У меня уже есть метод reallocate, по смыслу такой же
+    void shrinkToFit();
+    void repeatPushBack(const T& val, size_t k);
+    template< class IT >
+    void rangedPushBack(IT beg, size_t count);
+
     void pushBack(const T& val);
     void pushFront(const T& val);
+
+    //H/w избавиться от требования к конструктору по умолчанию
 
     void insert(size_t pos, const T& val);
     void insert(size_t pos, const Vector< T >& rhs, size_t b, size_t e);
@@ -663,6 +671,37 @@ namespace topit
   }
 
   template< class T>
+  void Vector< T >::reserve(size_t k)
+  {
+    Vector< T > v(k);
+    for (size_t i = 0; i < getSize(); ++i)
+    {
+      v[i] = (*this)[i];
+    }
+    swap(v);
+  }
+
+  template< class T>
+  void Vector< T >::shrinkToFit()
+  {
+
+  }
+
+  template< class T >
+  void Vector< T >::repeatPushBack(const T& val, size_t k)
+  {
+
+  }
+
+  template< class T >
+  template< class IT >
+  void Vector< T >::rangedPushBack(IT beg, size_t count)
+  {
+    // зарезервировать место под count + getSize()
+    // Вставлять элементы от beg до end
+  }
+
+  template< class T >
   void Vector< T >::pushBack(const T& val)
   {
     if (size_ == capacity_)
