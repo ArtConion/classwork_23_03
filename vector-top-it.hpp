@@ -24,10 +24,10 @@ namespace topit
     size_t getSize() const noexcept;
     size_t getCapacity() const noexcept;
 
-    //H/w + tests
     void reserve(size_t k); // У меня уже есть метод reallocate, по смыслу такой же
     void shrinkToFit();
     void repeatPushBack(const T& val, size_t k);
+    void repeatInsert(size_t id, const T& val, size_t k);
     template< class IT >
     void rangedPushBack(IT beg, size_t count);
 
@@ -673,32 +673,123 @@ namespace topit
   template< class T>
   void Vector< T >::reserve(size_t k)
   {
-    Vector< T > v(k);
-    for (size_t i = 0; i < getSize(); ++i)
+    if (k <= capacity_)
     {
-      v[i] = (*this)[i];
+      return;
     }
-    swap(v);
+
+    T* new_data = new T[k];
+
+    for (size_t i = 0; i < size_; ++i)
+    {
+      new_data[i] = data_[i];
+    }
+
+    delete[] data_;
+
+    data_ = new_data;
+    capacity_ = k;
   }
 
   template< class T>
   void Vector< T >::shrinkToFit()
   {
+    if (size_ == capacity_)
+    {
+      return;
+    }
 
+    if (size_ == 0)
+    {
+      delete[] data_;
+      data_ = nullptr;
+      capacity_ = 0;
+      return;
+    }
+
+    T* new_data = new T[size_];
+    for (size_t i = 0; i < size_; ++i)
+    {
+      new_data[i] = data_[i];
+    }
+    delete[] data_;
+    data_ = new_data;
+    capacity_ = size_;
+  }
+
+  template< class T >
+  void Vector< T >::repeatInsert(size_t id, const T& val, size_t k)
+  {
+    if (id > size_)
+    {
+      throw std::out_of_range("insert position out of range");
+    }
+
+    if (k == 0)
+    {
+      return;
+    }
+
+    Vector<T> result(size_ + k);
+
+    for (size_t i = 0; i < id; ++i)
+    {
+      result[i] = data_[i];
+    }
+
+    for (size_t i = 0; i < k; ++i)
+    {
+      result[id + i] = val;
+    }
+
+    for (size_t i = id; i < size_; ++i)
+    {
+      result[i + k] = data_[i];
+    }
+
+    swap(result);
   }
 
   template< class T >
   void Vector< T >::repeatPushBack(const T& val, size_t k)
   {
+    if (k == 0)
+    {
+      return;
+    }
 
+    if (size_ + k > capacity_)
+    {
+      reallocate(size_ + k);
+    }
+
+    for (size_t i = 0; i < k; ++i)
+    {
+      data_[size_ + i] = val;
+    }
+    size_ += k;
   }
 
   template< class T >
   template< class IT >
   void Vector< T >::rangedPushBack(IT beg, size_t count)
   {
-    // зарезервировать место под count + getSize()
-    // Вставлять элементы от beg до end
+    if (count == 0)
+    {
+      return;
+    }
+
+    if (size_ + count > capacity_)
+    {
+      reallocate(size_ + count);
+    }
+
+    for (size_t i = 0; i < count; ++i)
+    {
+      data_[size_ + i] = *beg;
+      ++beg;
+    }
+    size_ += count;
   }
 
   template< class T >
