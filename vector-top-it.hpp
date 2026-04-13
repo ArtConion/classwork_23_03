@@ -444,7 +444,7 @@ namespace topit
     int last_index = last - begin();
     size_t count = static_cast< size_t >(last_index - first_index);
 
-    Vector<T> result(size_ - count);
+    Vector< T > result(size_ - count);
 
     for (int i = 0; i < first_index; ++i)
     {
@@ -477,7 +477,7 @@ namespace topit
     int first_index = first - begin();
     int last_index = last - begin();
 
-    Vector<T> result;
+    Vector< T > result;
 
     for (int i = 0; i < first_index; ++i)
     {
@@ -746,7 +746,7 @@ namespace topit
       return;
     }
 
-    Vector<T> result(size_ + k);
+    Vector< T > result(size_ + k);
 
     for (size_t i = 0; i < id; ++i)
     {
@@ -839,7 +839,7 @@ namespace topit
       throw std::out_of_range("insert position out of range");
     }
 
-    Vector<T> result(size_ + 1);
+    Vector< T > result(size_ + 1);
 
     for (size_t i = 0; i < pos; ++i)
     {
@@ -870,7 +870,7 @@ namespace topit
 
     size_t count = e - b;
 
-    Vector<T> result(size_ + count);
+    Vector< T > result(size_ + count);
 
     for (size_t i = 0; i < pos; ++i)
     {
@@ -900,12 +900,12 @@ namespace topit
 
     if (size_ == 1)
     {
-      Vector<T> result;
+      Vector< T > result;
       swap(result);
       return;
     }
 
-    Vector<T> result(size_ - 1);
+    Vector< T > result(size_ - 1);
 
     for (size_t i = 0; i < pos; ++i)
     {

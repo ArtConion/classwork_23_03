@@ -199,7 +199,7 @@ bool test20()
 
 bool test21()
 {
-  Vector<int> v(3, 1);
+  Vector< int > v(3, 1);
   v.insert(1, 5);
 
   return v.getSize() == 4 && v[0] == 1 && v[1] == 5 && v[2] == 1 && v[3] == 1;
@@ -207,7 +207,7 @@ bool test21()
 
 bool test22()
 {
-  Vector<int> v(3, 1);
+  Vector< int > v(3, 1);
   try
   {
     v.insert(5, 99);
@@ -225,8 +225,8 @@ bool test22()
 
 bool test23()
 {
-  Vector<int> v(2, 1);
-  Vector<int> toInsert(3, 5);
+  Vector< int > v(2, 1);
+  Vector< int > toInsert(3, 5);
   v.insert(1, toInsert, 0, 3);
 
   bool result = v.getSize() == 5;
@@ -238,8 +238,8 @@ bool test23()
 
 bool test24()
 {
-  Vector<int> v(2, 1);
-  Vector<int> toInsert(3, 5);
+  Vector< int > v(2, 1);
+  Vector< int > toInsert(3, 5);
 
   try
   {
@@ -258,7 +258,7 @@ bool test24()
 
 bool test25()
 {
-  Vector<int> v(5, 0);
+  Vector< int > v(5, 0);
   v[1] = 1;
   v[2] = 2;
   v[3] = 3;
@@ -272,7 +272,7 @@ bool test25()
 
 bool test26()
 {
-  Vector<int> v(3, 1);
+  Vector< int > v(3, 1);
   try
   {
     v.erase(3);
@@ -290,7 +290,7 @@ bool test26()
 
 bool test27()
 {
-  Vector<int> v(3, 1);
+  Vector< int > v(3, 1);
   v.insert(v.begin() + 1, 5);
 
   return v.getSize() == 4 && v[0] == 1 && v[1] == 5 && v[2] == 1 && v[3] == 1;
@@ -298,7 +298,7 @@ bool test27()
 
 bool test28()
 {
-  Vector<int> v(3, 1);
+  Vector< int > v(3, 1);
   v.insert(v.begin(), 5);
 
   return v.getSize() == 4 && v[0] == 5 && v[1] == 1 && v[2] == 1 && v[3] == 1;
@@ -306,7 +306,7 @@ bool test28()
 
 bool test29()
 {
-  Vector<int> v(2, 1);
+  Vector< int > v(2, 1);
   v.insert(v.begin() + 1, 3, 5);
 
   bool result = v.getSize() == 5;
@@ -318,8 +318,8 @@ bool test29()
 
 bool test30()
 {
-  Vector<int> v(2, 1);
-  Vector<int> toInsert(3, 5);
+  Vector< int > v(2, 1);
+  Vector< int > toInsert(3, 5);
   v.insert(v.begin() + 1, toInsert.begin(), toInsert.end());
 
   bool result = v.getSize() == 5;
@@ -331,7 +331,7 @@ bool test30()
 
 bool test31()
 {
-  Vector<int> v(5, 0);
+  Vector< int > v(5, 0);
   v[1] = 1;
   v[2] = 2;
   v[3] = 3;
@@ -345,7 +345,7 @@ bool test31()
 
 bool test32()
 {
-  Vector<int> v(5, 0);
+  Vector< int > v(5, 0);
   v[1] = 1;
   v[2] = 2;
   v[3] = 3;
@@ -359,7 +359,7 @@ bool test32()
 
 bool test33()
 {
-  Vector<int> v(7, 0);
+  Vector< int > v(7, 0);
   v[0] = 1;
   v[1] = 2;
   v[2] = 3;
@@ -391,7 +391,7 @@ bool test35()
 
 bool test36()
 {
-    Vector<int> v(5, 1);
+    Vector< int > v(5, 1);
     v.reserve(20);
 
     bool result = v.getCapacity() >= 20;
@@ -405,7 +405,7 @@ bool test36()
 
 bool test37()
 {
-  Vector<int> v(3, 1);
+  Vector< int > v(3, 1);
   v.pushBack(2);
   v.pushBack(3);
   v.shrinkToFit();
@@ -415,7 +415,7 @@ bool test37()
 
 bool test38()
 {
-  Vector<int> v;
+  Vector< int > v;
   v.repeatPushBack(5, 3);
 
   return v.getSize() == 3 && v[0] == 5 && v[1] == 5 && v[2] == 5;
@@ -423,7 +423,7 @@ bool test38()
 
 bool test39()
 {
-  Vector<int> v{1, 2, 3};
+  Vector< int > v{1, 2, 3};
   v.repeatInsert(0, 99, 2);
 
   bool result = v.getSize() == 5;
@@ -434,7 +434,7 @@ bool test39()
 
 bool test40()
 {
-  Vector<int> v{1, 2, 3};
+  Vector< int > v{1, 2, 3};
 
   try
   {
@@ -453,7 +453,7 @@ bool test40()
 
 bool test41()
 {
-  Vector<int> v{10, 20, 30};
+  Vector< int > v{10, 20, 30};
   int arr[] = {1, 2, 3};
   v.rangedPushBack(arr, 3);
 
@@ -465,8 +465,8 @@ bool test41()
 
 bool test42()
 {
-  Vector<int> v;
-  Vector<int> source{10, 20, 30, 40};
+  Vector< int > v;
+  Vector< int > source{10, 20, 30, 40};
   v.rangedPushBack(source.begin(), 4);
 
   bool result = v.getSize() == 4;
@@ -499,28 +499,28 @@ int main()
     { test18, "Swap for 2 vectors" },
     { test19, "Move constructor" },
     { test20, "Move assignment operator" },
-    { test21, "insert by index (middle)" },
-    { test22, "insert by index (out of range throws)" },
-    { test23, "insert range from vector (middle)" },
-    { test24, "insert range (invalid source range throws)" },
-    { test25, "erase by index (middle)" },
-    { test26, "erase by index (out of range throws)" },
-    { test27, "insert by iterator (middle)" },
-    { test28, "insert by iterator (begin)" },
-    { test29, "insert count copies by iterator" },
-    { test30, "insert range by iterators" },
-    { test31, "erase by iterator (middle)" },
-    { test32, "erase range by iterators" },
-    { test33, "erase values by iterators" },
+    { test21, "Insert by index (middle)" },
+    { test22, "Insert by index (out of range throws)" },
+    { test23, "Insert range from vector (middle)" },
+    { test24, "Insert range (invalid source range throws)" },
+    { test25, "Erase by index (middle)" },
+    { test26, "Erase by index (out of range throws)" },
+    { test27, "Insert by iterator (middle)" },
+    { test28, "Insert by iterator (begin)" },
+    { test29, "Insert count copies by iterator" },
+    { test30, "Insert range by iterators" },
+    { test31, "Erase by iterator (middle)" },
+    { test32, "Erase range by iterators" },
+    { test33, "Erase values by iterators" },
     { test34, "Non-empty initializer list constructor"},
     { test35, "Empty initializer list constructor"},
-    { test36, "reserve on non-empty vector increases capacity and preserves data" },
-    { test37, "shrinkToFit after multiple pushBacks" },
-    { test38, "repeatPushBack with k > 0 on empty vector" },
-    { test39, "repeatInsert at beginning" },
-    { test40, "repeatInsert out of range throws" },
-    { test41, "rangedPushBack to non-empty vector" },
-    { test42, "rangedPushBack with Vector iterators" }
+    { test36, "Reserve on non-empty vector increases capacity and preserves data" },
+    { test37, "ShrinkToFit after multiple pushBacks" },
+    { test38, "RepeatPushBack with k > 0 on empty vector" },
+    { test39, "RepeatInsert at beginning" },
+    { test40, "RepeatInsert out of range throws" },
+    { test41, "RangedPushBack to non-empty vector" },
+    { test42, "RangedPushBack with Vector iterators" }
   };
 
   size_t size = sizeof(tests) / sizeof(case_t);
